@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     int ownId;
     Dictionary<int, GameObject> players;
     public GameObject playerPrefab;
+    public GameObject opponentPrefab;
     TestScript netManager;
 
     // Use this for initialization
@@ -72,14 +73,17 @@ public class PlayerManager : MonoBehaviour
             {
                 // instantiate.
                 Vector3 pos = info.Position;
-                var newPlayer = Instantiate(playerPrefab, pos, Quaternion.identity);
-                players.Add(info.Id, newPlayer);
-
                 if (info.Id == ownId)
                 {
-                    // parent the camera to this object.
-                    Camera.main.transform.SetParent(newPlayer.transform);
-                    Camera.main.transform.localPosition = new Vector3(0, 0, -10);
+                    var newPlayer = Instantiate(playerPrefab, pos, Quaternion.identity);
+                    players.Add(info.Id, newPlayer);
+                    // // parent the camera to this object.
+                    // Camera.main.transform.SetParent(newPlayer.transform);
+                    // Camera.main.transform.localPosition = new Vector3(0, 0, -10);
+                }
+                else{
+                    var newOpponent = Instantiate(opponentPrefab, pos, Quaternion.identity);
+                    players.Add(info.Id, newOpponent);
                 }
             }
             else
