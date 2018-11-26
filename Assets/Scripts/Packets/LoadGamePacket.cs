@@ -7,12 +7,12 @@
             get { return PacketType.LoadGame; }
         }
 
-        public byte ClientId { get; set; }
+        public int ClientId { get; set; }
         public short MapSize { get; set; }
 
         public void Read(PacketReader reader)
         {
-            ClientId = reader.ReadByte();
+            ClientId = reader.ReadInt32();
             MapSize = reader.ReadInt16();
         }
 

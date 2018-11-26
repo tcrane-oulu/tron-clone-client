@@ -2,13 +2,13 @@
 {
     public class PlayerInfo : IReadable, IWritable
     {
-        public short Id { get; set; }
+        public int Id { get; set; }
         public Position Position { get; set; }
         public Direction Direction { get; set; }
 
         public void Read(PacketReader reader)
         {
-            Id = reader.ReadInt16();
+            Id = reader.ReadInt32();
             Position = new Position();
             Position.Read(reader);
             Direction = (Direction)reader.ReadByte();

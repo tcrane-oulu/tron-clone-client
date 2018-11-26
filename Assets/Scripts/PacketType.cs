@@ -9,4 +9,5 @@ public enum PacketType : byte
     Login = 6,
     LoadGameAck = 7,
     LobbyUpdate = 8,
+    PlayerUpdate = 9,
 }

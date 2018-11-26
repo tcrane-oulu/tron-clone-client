@@ -3,7 +3,7 @@
     public class LoadGameAckPacket : IClientPacket
     {
 
-        public byte ClientId { get; set; }
+        public int ClientId { get; set; }
         public PacketType Id
         {
             get { return PacketType.LoadGameAck; }

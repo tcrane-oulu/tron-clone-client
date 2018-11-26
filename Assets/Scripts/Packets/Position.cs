@@ -1,4 +1,6 @@
-﻿namespace Packets
+﻿using UnityEngine;
+
+namespace Packets
 {
     public class Position : IReadable, IWritable
     {
@@ -20,6 +22,11 @@
         public override string ToString()
         {
             return string.Format("({0}, {1})", X, Y);
+        }
+
+        public static implicit operator Vector3(Position pos)
+        {
+            return new Vector3(pos.X, pos.Y, 0);
         }
     }
 }

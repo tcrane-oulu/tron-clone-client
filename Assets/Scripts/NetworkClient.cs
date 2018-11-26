@@ -183,7 +183,10 @@ public class NetworkClient : IDisposable
         if (!closed)
         {
             socket.Close();
-            stream.Close();
+            if (stream != null)
+            {
+                stream.Close();
+            }
             inBuffer = new byte[5];
             closed = true;
             Debug.Log("Disposed");
