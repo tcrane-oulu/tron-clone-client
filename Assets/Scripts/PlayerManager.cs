@@ -24,10 +24,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (ownId != 0)
         {
-            if (Event.current != null)
-            {
-                Debug.Log(string.Format("NIB {0}", Event.current.keyCode.ToString()));
-            }
             // if we are in the game, we can start processing input.
             if (Input.GetKeyDown(KeyCode.W))
             {
@@ -55,7 +51,7 @@ public class PlayerManager : MonoBehaviour
                 var newDir = Direction.Right;
                 var playerUpdate = new PlayerUpdatePacket(newDir);
                 netManager.Send(playerUpdate);
-                Debug.Log("MOVING MOVING RIGHT");
+                Debug.Log("MOVING RIGHT");
             }
         }
     }
@@ -77,11 +73,12 @@ public class PlayerManager : MonoBehaviour
                 {
                     var newPlayer = Instantiate(playerPrefab, pos, Quaternion.identity);
                     players.Add(info.Id, newPlayer);
-                    // // parent the camera to this object.
+                    // parent the camera to this object.
                     // Camera.main.transform.SetParent(newPlayer.transform);
                     // Camera.main.transform.localPosition = new Vector3(0, 0, -10);
                 }
-                else{
+                else
+                {
                     var newOpponent = Instantiate(opponentPrefab, pos, Quaternion.identity);
                     players.Add(info.Id, newOpponent);
                 }
