@@ -9,6 +9,8 @@ public static class PacketResolver
             case PacketType.LobbyInfo: return new LobbyInfoPacket();
             case PacketType.LoadGame: return new LoadGamePacket();
             case PacketType.Tick: return new TickPacket();
+            case PacketType.Death: return new DeathPacket();
+            case PacketType.EndGame: return new EndGamePacket();
         }
         return null;
     }

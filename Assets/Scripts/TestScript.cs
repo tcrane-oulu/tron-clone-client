@@ -87,6 +87,12 @@ public class TestScript : MonoBehaviour
                     // Id: 1, Pos (float, float), direction: Right, ...
                     playerManager.OnTick(packet as TickPacket);
                     break;
+                case PacketType.Death:
+                    playerManager.OnDeath(packet as DeathPacket);
+                    break;
+                case PacketType.EndGame:
+                    playerManager.OnEndGame(packet as EndGamePacket);
+                    break;
                 default:
                     // Debug.Log("Default");
                     Debug.Log(string.Format("Type: {0}, str: {1}", packet.Id, packet.ToString()));

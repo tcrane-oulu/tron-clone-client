@@ -7,9 +7,12 @@ public class PlayerManager : MonoBehaviour
 {
 
     int ownId;
+    int endGameTarget = -1;
     Dictionary<int, GameObject> players;
     public GameObject playerPrefab;
     public GameObject opponentPrefab;
+    public GameObject deathParticles;
+    public GameObject victoryImage;
     TestScript netManager;
 
     // Use this for initialization
@@ -54,11 +57,29 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log("MOVING RIGHT");
             }
         }
+        if (endGameTarget != -1)
+        {
+            victoryImage.SetActive(true);
+            var pos = players[endGameTarget].transform.position;
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(pos.x, pos.y, Camera.main.transform.position.z), 0.02f);
+            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 40, 0.02f);
+        }
     }
 
     public void OnLoadGame(LoadGamePacket loadGame)
     {
         ownId = loadGame.ClientId;
+    }
+
+    public void OnDeath(DeathPacket death)
+    {
+        var playerPos = players[death.PlayerId].transform.position;
+        var deathEffect = Instantiate(deathParticles, playerPos, Quaternion.identity);
+    }
+
+    public void OnEndGame(EndGamePacket endGame)
+    {
+        endGameTarget = endGame.WinnerId;
     }
 
     public void OnTick(TickPacket tick)
