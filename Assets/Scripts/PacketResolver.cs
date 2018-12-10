@@ -11,6 +11,7 @@ public static class PacketResolver
             case PacketType.Tick: return new TickPacket();
             case PacketType.Death: return new DeathPacket();
             case PacketType.EndGame: return new EndGamePacket();
+            case PacketType.StartGame: return new StartGamePacket();
         }
         return null;
     }

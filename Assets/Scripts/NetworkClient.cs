@@ -37,10 +37,6 @@ public class NetworkClient : IDisposable
         {
             StartConnection(host, port);
         }
-        else
-        {
-            Debug.Log("Socket already connected.");
-        }
     }
 
     // Sends a client packet to the server.
@@ -74,7 +70,6 @@ public class NetworkClient : IDisposable
     // Starts the connection process.
     private void StartConnection(string host, int port)
     {
-        Debug.Log("Starting connection");
         socket.BeginConnect(host, port, OnConnect, null);
         inBuffer = new byte[5];
     }
@@ -84,7 +79,6 @@ public class NetworkClient : IDisposable
     {
         if (socket.Connected)
         {
-            Debug.Log("Connected.");
             closed = false;
             stream = socket.GetStream();
 
@@ -93,7 +87,6 @@ public class NetworkClient : IDisposable
         }
         else
         {
-            Debug.Log("Couldn't connect.");
             Dispose();
         }
         if (Connected != null)
@@ -189,7 +182,6 @@ public class NetworkClient : IDisposable
             }
             inBuffer = new byte[5];
             closed = true;
-            Debug.Log("Disposed");
         }
     }
 }

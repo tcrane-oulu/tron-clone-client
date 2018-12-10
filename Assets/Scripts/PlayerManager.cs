@@ -13,13 +13,13 @@ public class PlayerManager : MonoBehaviour
     public GameObject opponentPrefab;
     public GameObject deathParticles;
     public GameObject victoryImage;
-    TestScript netManager;
+    Player netManager;
 
     // Use this for initialization
     void Start()
     {
         players = new Dictionary<int, GameObject>();
-        netManager = FindObjectOfType<TestScript>();
+        netManager = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -33,28 +33,24 @@ public class PlayerManager : MonoBehaviour
                 var newDir = Direction.Up;
                 var playerUpdate = new PlayerUpdatePacket(newDir);
                 netManager.Send(playerUpdate);
-                Debug.Log("MOVING UP");
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
                 var newDir = Direction.Left;
                 var playerUpdate = new PlayerUpdatePacket(newDir);
                 netManager.Send(playerUpdate);
-                Debug.Log("MOVING LEFT");
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
                 var newDir = Direction.Down;
                 var playerUpdate = new PlayerUpdatePacket(newDir);
                 netManager.Send(playerUpdate);
-                Debug.Log("MOVING DOWN");
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
                 var newDir = Direction.Right;
                 var playerUpdate = new PlayerUpdatePacket(newDir);
                 netManager.Send(playerUpdate);
-                Debug.Log("MOVING RIGHT");
             }
         }
         if (endGameTarget != -1)
@@ -94,9 +90,6 @@ public class PlayerManager : MonoBehaviour
                 {
                     var newPlayer = Instantiate(playerPrefab, pos, Quaternion.identity);
                     players.Add(info.Id, newPlayer);
-                    // parent the camera to this object.
-                    // Camera.main.transform.SetParent(newPlayer.transform);
-                    // Camera.main.transform.localPosition = new Vector3(0, 0, -10);
                 }
                 else
                 {
