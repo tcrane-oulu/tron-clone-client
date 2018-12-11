@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject opponentPrefab;
     public GameObject deathParticles;
     public GameObject victoryImage;
+    public GameObject playerMarker;
     Player netManager;
 
     // Use this for initialization
@@ -89,6 +90,7 @@ public class PlayerManager : MonoBehaviour
                 if (info.Id == ownId)
                 {
                     var newPlayer = Instantiate(playerPrefab, pos, Quaternion.identity);
+                    Instantiate(playerMarker, newPlayer.transform);
                     players.Add(info.Id, newPlayer);
                 }
                 else

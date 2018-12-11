@@ -95,6 +95,7 @@ public class Player : MonoBehaviour
                     playerManager.OnDeath(packet as DeathPacket);
                     break;
                 case PacketType.EndGame:
+                    loginUI.OnEndGame(packet as EndGamePacket);
                     playerManager.OnEndGame(packet as EndGamePacket);
                     break;
                 default:

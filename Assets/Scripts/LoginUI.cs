@@ -14,9 +14,9 @@ public class LoginUI : MonoBehaviour
     public GameObject lobbyPanel;
     public GameObject playerPanel;
     public GameObject playerPrefab;
-    public GameObject startWarningPanel;
-    public Text startWarningText;
     public Text statusText;
+    public GameObject winnerPanel;
+    public Text winnerText;
 
     public Text serverIpText;
     public Text portText;
@@ -39,7 +39,7 @@ public class LoginUI : MonoBehaviour
 
         loginPanel.SetActive(true);
         lobbyPanel.SetActive(false);
-        startWarningPanel.SetActive(false);
+        winnerPanel.SetActive(false);
         border.SetActive(false);
     }
 
@@ -78,9 +78,7 @@ public class LoginUI : MonoBehaviour
             actionQueue.Enqueue(new Action(() =>
             {
 				statusText.text = "Got all responses!";
-                startWarningPanel.SetActive(true);
-                startWarningText.text = string.Format("Game starts in {0} seconds.", startGame.StartTime);
-                Invoke("DisableAll", startGame.StartTime);
+                DisableAll();
             }));
         }
     }
@@ -89,8 +87,13 @@ public class LoginUI : MonoBehaviour
     {
         loginPanel.SetActive(false);
         lobbyPanel.SetActive(false);
-        startWarningPanel.SetActive(false);
+        winnerPanel.SetActive(false);
         border.SetActive(true);
+    }
+
+    public void OnEndGame(Packets.EndGamePacket endGame) {
+        winnerText.text = endGame.WinnerName;
+        winnerPanel.SetActive(true);
     }
 
     public void OnLobbyInfo(Packets.LobbyInfoPacket lobbyInfo)
