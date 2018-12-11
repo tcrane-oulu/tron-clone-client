@@ -23,15 +23,18 @@ public class Player : MonoBehaviour
         client.Send(packet);
     }
 
-    public void Login(string name, int version, string ip = "localhost")
+    public void Login(string name, int version, string ip = "35.228.234.250", int port = 2050)
     {
+        Debug.Log(string.Format("Conneting to {0}:{1}", ip, port));
         client.Connect(ip, 2050);
         client.Connected += (connected) =>
         {
             if (!connected)
             {
+                Debug.Log("Couldn't connect.");
                 return;
             }
+            Debug.Log("Connected!");
             var login = new Packets.LoginPacket();
             login.Name = name;
             login.Version = version;

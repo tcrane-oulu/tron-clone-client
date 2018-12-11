@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LoginUI : MonoBehaviour
 {
-    const int VERSION = 12345;
+    const int VERSION = 6520;
     public GameObject loginPanel;
     public Text username;
     public Button loginButton;
@@ -17,6 +17,9 @@ public class LoginUI : MonoBehaviour
     public GameObject startWarningPanel;
     public Text startWarningText;
     public Text statusText;
+
+    public Text serverIpText;
+    public Text portText;
     public GameObject border;
 
     private bool ready;
@@ -43,7 +46,7 @@ public class LoginUI : MonoBehaviour
     public void OnLoginClick()
     {
         loginButton.interactable = false;
-        netManager.Login(username.text, VERSION);
+        netManager.Login(username.text, VERSION, serverIpText.text, int.Parse(portText.text));
         netManager.client.Connected += (connected) =>
         {
             if (connected)
