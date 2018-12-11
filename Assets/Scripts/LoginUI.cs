@@ -21,12 +21,15 @@ public class LoginUI : MonoBehaviour
     public Text serverIpText;
     public Text portText;
     public GameObject border;
+    public GameObject lobbyButton;
 
     private bool ready;
 
     private Player netManager;
 
     private Queue<Action> actionQueue;
+
+    private PlayerManager playerManager;
     private object mutex;
 
     // Use this for initialization
@@ -36,11 +39,18 @@ public class LoginUI : MonoBehaviour
         mutex = new object();
         ready = false;
         netManager = FindObjectOfType<Player>();
+        playerManager = FindObjectOfType<PlayerManager>();
+        EnableAll();
+    }
 
+    public void EnableAll()
+    {
         loginPanel.SetActive(true);
         lobbyPanel.SetActive(false);
         winnerPanel.SetActive(false);
+        lobbyButton.SetActive(false);
         border.SetActive(false);
+        loginButton.interactable = true;
     }
 
     public void OnLoginClick()
@@ -77,7 +87,7 @@ public class LoginUI : MonoBehaviour
         {
             actionQueue.Enqueue(new Action(() =>
             {
-				statusText.text = "Got all responses!";
+                statusText.text = "Got all responses!";
                 DisableAll();
             }));
         }
@@ -88,12 +98,21 @@ public class LoginUI : MonoBehaviour
         loginPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         winnerPanel.SetActive(false);
+        lobbyButton.SetActive(false);
         border.SetActive(true);
     }
 
-    public void OnEndGame(Packets.EndGamePacket endGame) {
+    public void OnLobbyClick()
+    {
+        playerManager.Cleanup();
+        EnableAll();
+    }
+
+    public void OnEndGame(Packets.EndGamePacket endGame)
+    {
         winnerText.text = endGame.WinnerName;
         winnerPanel.SetActive(true);
+        lobbyButton.SetActive(true);
     }
 
     public void OnLobbyInfo(Packets.LobbyInfoPacket lobbyInfo)
@@ -118,7 +137,7 @@ public class LoginUI : MonoBehaviour
 
     public void OnLoadGame()
     {
-		statusText.text = "Waiting for player responses...";
+        statusText.text = "Waiting for player responses...";
     }
 
     // Update is called once per frame

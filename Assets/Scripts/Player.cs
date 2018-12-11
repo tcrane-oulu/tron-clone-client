@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
-        client.Dispose();
+        client.Disconnect();
     }
 
     public void Send(IClientPacket packet)
@@ -87,8 +87,6 @@ public class Player : MonoBehaviour
                     playerManager.OnLoadGame(packet as LoadGamePacket);
                     break;
                 case PacketType.Tick:
-                    // str: Players: ID: 0, Pos:(float, float), Direction: Right, 
-                    // Id: 1, Pos (float, float), direction: Right, ...
                     playerManager.OnTick(packet as TickPacket);
                     break;
                 case PacketType.Death:

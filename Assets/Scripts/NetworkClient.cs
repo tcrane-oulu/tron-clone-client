@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-public class NetworkClient : IDisposable
+public class NetworkClient
 {
 
     public delegate void ConnectedHandler(bool connected);
@@ -22,17 +22,17 @@ public class NetworkClient : IDisposable
 
     public NetworkClient()
     {
-        socket = new TcpClient();
     }
 
     ~NetworkClient()
     {
-        Dispose();
+        Disconnect();
     }
 
     // Attempts to connect to the given host and port.
     public void Connect(string host, int port)
     {
+        socket = new TcpClient();
         if (!socket.Connected)
         {
             StartConnection(host, port);
@@ -87,7 +87,7 @@ public class NetworkClient : IDisposable
         }
         else
         {
-            Dispose();
+            Disconnect();
         }
         if (Connected != null)
         {
@@ -121,7 +121,7 @@ public class NetworkClient : IDisposable
                 var tmp = new byte[newLength];
                 if (newLength < 5)
                 {
-                    Dispose();
+                    Disconnect();
                     return;
                 }
                 inBuffer.CopyTo(tmp, 0);
@@ -171,11 +171,10 @@ public class NetworkClient : IDisposable
     // Called to release the resources held by this instance.
     // Note that this resource doesn't actually hold any unmanaged
     // resources, so we simply close the stream and the socket.
-    public void Dispose()
+    public void Disconnect()
     {
         if (!closed)
         {
-            socket.Close();
             if (stream != null)
             {
                 stream.Close();

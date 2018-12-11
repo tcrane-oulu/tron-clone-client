@@ -16,9 +16,14 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerMarker;
     Player netManager;
 
+    private float initCameraSize;
+    private Vector3 initCameraPos;
+
     // Use this for initialization
     void Start()
     {
+        initCameraPos = Camera.main.transform.position;
+        initCameraSize = Camera.main.orthographicSize;
         players = new Dictionary<int, GameObject>();
         netManager = FindObjectOfType<Player>();
     }
@@ -60,6 +65,9 @@ public class PlayerManager : MonoBehaviour
             var pos = players[endGameTarget].transform.position;
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(pos.x, pos.y, Camera.main.transform.position.z), 0.02f);
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 40, 0.02f);
+        } else {
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, initCameraPos, 0.02f);
+            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, initCameraSize, 0.02f);
         }
     }
 
@@ -105,5 +113,18 @@ public class PlayerManager : MonoBehaviour
                 player.transform.position = Vector3.Lerp(player.transform.position, info.Position, 0.8f);
             }
         }
+    }
+
+    public void Cleanup()
+    {
+        foreach (var kvp in players)
+        {
+            Destroy(kvp.Value);
+        }
+        players.Clear();
+        endGameTarget = -1;
+        ownId = 0;
+        netManager.client.Disconnect();
+        victoryImage.SetActive(false);
     }
 }
